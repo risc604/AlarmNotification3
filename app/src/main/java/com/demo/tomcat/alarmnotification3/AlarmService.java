@@ -34,6 +34,7 @@ public class AlarmService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+        Log.w(TAG, "onStartCommand(), ");
         sendNotification("Wake Up! Wake Up!");
         return super.onStartCommand(intent, flags, startId);
     }

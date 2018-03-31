@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity
 
                 ringtone = RingtoneManager.getRingtone(context, alarmUri);
                 ringtone.play();
-
-                ComponentName comp = new ComponentName(context.getPackageName(), AlarmService.class.getName());
-                startWakefulService(context, (intent.setComponent(comp)));
+                sendBroadcast(new Intent(ALARM_TIMER));
+                //ComponentName comp = new ComponentName(context.getPackageName(), AlarmService.class.getName());
+                //startWakefulService(context, (intent.setComponent(comp)));
 
             }
             else if (actionEvent.equalsIgnoreCase(NOTIFICATION))
