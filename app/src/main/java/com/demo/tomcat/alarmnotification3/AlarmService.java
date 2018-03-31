@@ -35,7 +35,13 @@ public class AlarmService extends Service
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         Log.w(TAG, "onStartCommand(), ");
-        sendNotification("Wake Up! Wake Up!");
+        if (intent.getAction().equalsIgnoreCase(MainActivity.ALARM_TIMER)) {
+            sendNotification("Wake Up! Wake Up!");
+        }
+        else
+        {
+            Log.e(TAG, "Error!! intent.getAction(): " + intent.getAction());
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 

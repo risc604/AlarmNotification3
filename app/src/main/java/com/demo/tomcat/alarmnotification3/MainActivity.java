@@ -27,8 +27,8 @@ import static android.support.v4.content.WakefulBroadcastReceiver.startWakefulSe
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String ALARM_TIMER = "com.demo.tomcat.alarmnotification3.ACTION_ALARM_TIMER";
-    private static final String NOTIFICATION = "com.demo.tomcat.alarmnotification3.ACTION_NOTIFICATION";
+    public static final String ALARM_TIMER = "com.demo.tomcat.alarmnotification3.ACTION_ALARM_TIMER";
+    public static final String NOTIFICATION = "com.demo.tomcat.alarmnotification3.ACTION_NOTIFICATION";
 
 
     TimePicker alarmTimerPicker;
