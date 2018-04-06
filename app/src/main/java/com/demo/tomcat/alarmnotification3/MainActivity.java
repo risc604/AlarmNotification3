@@ -24,6 +24,9 @@ import java.util.Calendar;
 
 import static android.support.v4.content.WakefulBroadcastReceiver.startWakefulService;
 
+// http://www.betterbing.net/?p=205
+// https://stackoverflow.com/questions/32697295/android-alarm-manager-with-broadcast-receiver
+
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -43,14 +46,16 @@ public class MainActivity extends AppCompatActivity
     private static boolean  registedFilter = false;
 
     public class AlarmReceiver extends BroadcastReceiver
+    //private BroadcastReceiver alarmReceiver = new BroadcastReceiver()
     {
         Ringtone ringtone;
 
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            Log.w(TAG, "onServiceConnected(), ");
             String actionEvent = intent.getAction();
+            Log.w(TAG, "onReceive(), action: " + actionEvent);
+            //String actionEvent = intent.getAction();
             if (actionEvent.equalsIgnoreCase(ALARM_TIMER))
             {
                 Log.w(TAG, "ACTION ALARM_TIMER, ");
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
-    }
+    };
 
     private ServiceConnection mConnection = new ServiceConnection()
     {
@@ -113,8 +118,9 @@ public class MainActivity extends AppCompatActivity
         if (!registedFilter)
         {
             alarmReceiver = new AlarmReceiver();
-            registerReceiver(alarmReceiver, makeFilterRegister());
+            this.registerReceiver(alarmReceiver, makeFilterRegister());
             registedFilter = true;
+             Log.w(TAG, " register Reveiver: " + alarmReceiver.toString() );
         }
 
         //if (mConnection == null)
@@ -131,7 +137,10 @@ public class MainActivity extends AppCompatActivity
         Log.w(TAG, "onStop(), ");
 
         if (registedFilter)
-            unregisterReceiver(alarmReceiver);
+        {
+            this.unregisterReceiver(alarmReceiver);
+            registedFilter = false;
+        }
     }
 
     public void onToggleClicked(View view)
@@ -143,10 +152,12 @@ public class MainActivity extends AppCompatActivity
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, alarmTimerPicker.getCurrentHour());
             calendar.set(Calendar.MINUTE, alarmTimerPicker.getCurrentMinute());
-            Intent newIntent = new Intent(this, AlarmReceiver.class);
+            Intent newIntent = new Intent(ALARM_TIMER);
             pendingIntent = PendingIntent.getBroadcast(MainActivity.this,
-                    0, newIntent, 0);
+                    0, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            this.sendBroadcast(newIntent);
+            //sendBroadcast(new Intent(ALARM_TIMER));
         }
         else
         {
